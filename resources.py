@@ -11,6 +11,11 @@ response = client.run_instances(
     Keyname = 'vockey'
 )
 
+# create an EC2 instance using boto3, you may want to wait till it reaches a “Running” state until you can do something with this EC2 instanc 
+ec2_inst_id = response["Instances"][0]["InstanceId"]
+waiter = ec2.get_waiter("instance_running")
+waiter.wait(InstanceIds=[ecs_inst_id])
+
 #create bucket - https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-example-creating-buckets.html
 
 import logging
