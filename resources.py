@@ -19,7 +19,6 @@ waiter.wait(InstanceIds=[ecs_inst_id])
 #create bucket - https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-example-creating-buckets.html
 
 # import logging
-# import boto3
 # from botocore.exceptions import ClientError
 
 
@@ -49,6 +48,8 @@ waiter.wait(InstanceIds=[ecs_inst_id])
 #         return False
 #     return True
 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/guide/migrations3.html
+
 s3.create_bucket(Bucket='bucket-S1108900')
 s3.create_bucket(Bucket='bucket-S1108900', CreateBucketConfiguration={
     'LocationConstraint': 'us-west-1'})
@@ -63,8 +64,9 @@ for bucket in response['Buckets']:
     print(f'  {bucket["Name"]}')
 
 
+#create sns topic - this creates a communication channel. A topic lets you group multiple endpoints (such as AWS Lambda, Amazon SQS, HTTP/S, or an email address). 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sns.html#topic 
 
-# create SQS
-# sqs = boto3.resource('sqs')
-
-#create sns topic - https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html  
+# Amazon Simple Notification Service (SNS) Topic
+sns = boto3.resource('sns')
+topic = sns.Topic('arn')
