@@ -33,32 +33,4 @@ Resources:
       MessageRetentionPeriod: 345600
       ReceiveMessageWaitTimeSeconds: 0
       VisibilityTimeout: 30 
-     
-
-
-  DynamoDBQueryPolicy:
-    Type: "AWS::IAM::Policy"
-    Properties:
-      PolicyName: DynamoDBQueryPolicy
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Action: "dynamodb:Query"
-            Resource: "*"
-      Roles:
-        - Ref: "OrdersTableQueryRole"
-
-  OrdersTableQueryRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service:
-                - "dynamodb.amazonaws.com"
-            Action:
-              - "sts:AssumeRole"
-      Path: "/"
+    
