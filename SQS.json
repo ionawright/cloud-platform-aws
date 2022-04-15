@@ -1,0 +1,29 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Metadata": {
+        "AWS::CloudFormation::Designer": {
+            "cd1fe0ca-6e2e-4e8a-87b1-590d68491e46": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 409,
+                    "y": 146
+                },
+                "z": 0
+            }
+        }
+    },
+    "Resources": {
+        "SQSQ3IFJ8": {
+            "Type": "AWS::SQS::Queue",
+            "Properties": {},
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "cd1fe0ca-6e2e-4e8a-87b1-590d68491e46"
+                }
+            }
+        }
+    }
+}
