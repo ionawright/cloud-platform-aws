@@ -22,7 +22,20 @@ Resources:
         WriteCapacityUnits: "5"
     # SQS role goes in here
     DependsOn:
-      - DynamoDBQueryPolicy
+      - SQSQueuePolicy
+      
+  SQSQueuePolicy:
+    Type: "AWS::SQS::Queue"
+    Properties:
+      ContentBasedDeduplication: false
+      DelaySeconds: 100
+      KmsDataKeyReusePeriodSeconds: 86400
+      MaximumMessageSize: 262144
+      MessageRetentionPeriod: 345600
+      ReceiveMessageWaitTimeSeconds: 0
+      VisibilityTimeout: 30 
+     
+
 
   DynamoDBQueryPolicy:
     Type: "AWS::IAM::Policy"
