@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  OrdersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: s1108900_prod
+      AttributeDefinitions:
+        - AttributeName: "s1108900"
+          AttributeType: "S"
+        - AttributeName: "CloudPlatformDevelopment"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "s1108900"
+          KeyType: "HASH"
+        - AttributeName: "CloudPlatformDevelopment"
+          KeyType: "RANGE"
+      TimeToLiveSpecification:
+        AttributeName: "ExpirationTime"
+        Enabled: true
+      ProvisionedThroughput:
+        ReadCapacityUnits: "10"
+        WriteCapacityUnits: "5"
+    # SQS role goes in here
+    DependsOn:
+      - DynamoDBQueryPolicy
+
+  DynamoDBQueryPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: DynamoDBQueryPolicy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action: "dynamodb:Query"
+            Resource: "*"
+      Roles:
+        - Ref: "OrdersTableQueryRole"
+
+  OrdersTableQueryRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "dynamodb.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
