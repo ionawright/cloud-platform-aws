@@ -1,9 +1,12 @@
 # sudo pip3 install boto3
 import boto3
+from time import sleep 
 
 BUCKET_NAME = 'ionawright-bucket-s1108900'
 
 s3_client = boto3.client('s3')
+s3_client = boto3.client('s3')
+
 # ability to interact with s3 in AWS
 
 #  def create_bucket(bucket_name, region=None):
@@ -43,33 +46,22 @@ topicResponse = sns_client.create_topic(
     Name='ionawright-sns-topic-s1108900',
 )
 
-# upload a file
-import logging
-from botocore.exceptions import ClientError
-import os
 
+s3_client.put_object(Body='image1.png', Bucket=BUCKET_NAME, Key='image1.png')
+print("Image 1 uploaded ")
+sleep(30)
+s3_client.put_object(Body='image1.png', Bucket=BUCKET_NAME, Key='image2.png')
+print("Image 2 uploaded ")
+sleep(30)
+s3_client.put_object(Body='image1.png', Bucket=BUCKET_NAME, Key='image3.png')
+print("Image 3 uploaded ")
+sleep(30)
+s3_client.put_object(Body='image1.png', Bucket=BUCKET_NAME, Key='image4.png')
+print("Image 4 uploaded ")
+sleep(30)
+s3_client.put_object(Body='image1.png', Bucket=BUCKET_NAME, Key='image5.png')
+print("Image 5 uploaded ")
 
-def upload_file(file_name, bucket, object_name=None):
-    """Upload a file to an S3 bucket
-
-    :param file_name: File to upload
-    :param bucket: Bucket to upload to
-    :param object_name: S3 object name. If not specified then file_name is used
-    :return: True if file was uploaded, else False
-    """
-
-    # If S3 object_name was not specified, use file_name
-    if object_name is None:
-        object_name = os.path.basename(file_name)
-
-    # Upload the file
-    s3_client = boto3.client('s3')
-    try:
-        response = s3_client.upload_file(file_name, bucket, object_name)
-    except ClientError as e:
-        logging.error(e)
-        return False
-    return True
 
 # snsSub = sns_client.subscribe(
 #     TopicArn='arn:aws:sns:us-east-1:132123009992:ionawright-sns-topic-s1108900',
@@ -77,4 +69,51 @@ def upload_file(file_name, bucket, object_name=None):
 #     Endpoint='07880342772'
 # )
 
+# response = sns.subscribe(TopicArn=topic_arn, Protocol="SMS", Endpoint="+48123456789")
+# subscription_arn = response["SubscriptionArn"]
+
+# List subscriptions by topic
+# response = sns.list_subscriptions_by_topic(TopicArn=topic_arn)
+# subscriptions = response["Subscriptions"]
+
+
+# Send a single SMS (no topic, no subscription needed)
+# sns.publish(PhoneNumber="+48123456789", 
+#             Message="message text")
+
 # print(snsSub)
+
+
+# create a SQS queue
+# def create_queue():
+#     sqs_client = boto3.client("sqs", region_name="us-west-2")
+#     response = sqs_client.create_queue(
+#         QueueName="my-new-queue",
+#         Attributes={
+#             "DelaySeconds": "0",
+#             "VisibilityTimeout": "60",  # 60 seconds
+#         }
+#     )
+#     print(response)
+
+# def get_queue_url():
+#     sqs_client = boto3.client("sqs", region_name="us-west-2")
+#     response = sqs_client.get_queue_url(
+#         QueueName="my-new-queue",
+#     )
+#     return response["QueueUrl"]
+
+# send message to SQS
+# def send_message():
+#     sqs_client = boto3.client("sqs", region_name="us-west-2")
+
+#     message = {"key": "value"}
+#     response = sqs_client.send_message(
+#         QueueUrl="https://us-west-2.queue.amazonaws.com/xxx/my-new-queue",
+#         MessageBody=json.dumps(message)
+#     )
+#     print(response)
+
+
+
+
