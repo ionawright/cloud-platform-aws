@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
-  OrdersTable:
+  ImageTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: s1108900_prod
+      TableName: s1108900-table
       AttributeDefinitions:
         - AttributeName: "s1108900"
           AttributeType: "S"
@@ -20,10 +20,6 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: "10"
         WriteCapacityUnits: "5"
-    # SQS role goes in here
-    DependsOn:
-      - SQSQueuePolicy
-      
   SQSQueuePolicy:
     Type: "AWS::SQS::Queue"
     Properties:
@@ -32,5 +28,5 @@ Resources:
       MaximumMessageSize: 262144
       MessageRetentionPeriod: 345600
       ReceiveMessageWaitTimeSeconds: 0
-      VisibilityTimeout: 30 
-    
+      VisibilityTimeout: 30
+      
