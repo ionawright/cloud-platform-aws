@@ -5,22 +5,19 @@ Resources:
     Properties:
       TableName: s1108900-table
       AttributeDefinitions:
-        - AttributeName: "s1108900"
-          AttributeType: "S"
-        - AttributeName: "CloudPlatformDevelopment"
+        - AttributeName: "Image"
           AttributeType: "S"
       KeySchema:
-        - AttributeName: "s1108900"
+        - AttributeName: "Image"
           KeyType: "HASH"
-        - AttributeName: "CloudPlatformDevelopment"
-          KeyType: "RANGE"
       TimeToLiveSpecification:
         AttributeName: "ExpirationTime"
         Enabled: true
       ProvisionedThroughput:
-        ReadCapacityUnits: "10"
-        WriteCapacityUnits: "5"
-  SQSQueuePolicy:
+        ReadCapacityUnits: "1"
+        WriteCapacityUnits: "1"
+  
+  SQSQueueLabels:
     Type: "AWS::SQS::Queue"
     Properties:
       DelaySeconds: 100
@@ -29,4 +26,3 @@ Resources:
       MessageRetentionPeriod: 345600
       ReceiveMessageWaitTimeSeconds: 0
       VisibilityTimeout: 30
-      
