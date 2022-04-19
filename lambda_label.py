@@ -22,14 +22,14 @@ def lambda_handler(event, context):
 
     # Detect labels using rekognition.
     rek_client = boto3.client('rekognition')
-    response = rek_client.detect_labels(Image = {"S3Object": {"Bucket": bucket_name, "Name": file_name}}, MaxLabels=5, MinConfidence=80)
+    response = rek_client.detect_labels(Image = {"S3Object": {"Bucket": bucket_name, "Name": file_name}}, MaxLabels=5, MinConfidence=75)
     
     # Get the labels from the rekognition response & print them to console.
     labels = response['Labels']
     print(f'Found {len(labels)} labels in the image:')
     
     # DynamoDB - add item to table
-    def addToDatabase(item):
+    def add_to_database(item):
         client = boto3.client('dynamodb')
         try:
             client.put_item(TableName = table, Item = item)
@@ -37,17 +37,19 @@ def lambda_handler(event, context):
             print(e)
 
     # Declare a JSON string for insert into DB
-    insert = '{"ImageName": {"S": "' + file_name + '"}'
+    insert = '{"Image": {"S": "' + file_name + '"}'
         
     for label in labels:
         name = label['Name']
         confidence = label['Confidence']
-        insert = insert + ', { "' + name + '": { "N" :"' + str(confidence) + '"} }'
+        insert = insert + ',"' + name + '": { "N" :"' + str(confidence) + '"}'
         print(f'> Label "{name}" with confidence {confidence:.2f}')
     
     # Complete json string with ending bracket
     insert = insert + '}'
     print(insert)
+    insert_dict = json.loads(insert)
+    add_to_database(insert_dict)
     
     return {
         'statusCode': 200,
